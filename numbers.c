@@ -31,6 +31,16 @@ void* take_int_input()
   return number;
 }
 
+void* take_char_input()
+{
+  char input;
+  char *number = malloc(sizeof(char));
+  printf("enter your number ");
+  scanf(" %c", &input);
+  *number = input;
+  return number;
+}
+
 int take_position_input()
 {
   int position;
@@ -39,7 +49,7 @@ int take_position_input()
   return position;
 }
 
-void oparate_on(List_ptr list, char option, Take_input input)
+void oparate_on(List_ptr list, char option, Take_input input, Print print)
 {
   void* number;
   int result,  position;
@@ -100,7 +110,7 @@ void oparate_on(List_ptr list, char option, Take_input input)
     break;
 
   case 'l':
-    display(list);
+    display(list, print);
     break;
 
   case 'm':
@@ -121,7 +131,8 @@ int main(void)
   {
     show_menu();
     scanf(" %c", &option);
-    oparate_on(list, option, &take_int_input);
+    // oparate_on(list, option, &take_int_input, &print_int);
+    oparate_on(list, option, &take_char_input, &print_char);
   }
   destroy_list(list);
   return 0;

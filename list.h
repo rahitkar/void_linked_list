@@ -25,6 +25,8 @@ typedef struct
 typedef List *List_ptr;
 typedef char * Char_ptr;
 
+typedef void (*Print)(void*);
+
 List_ptr create_list(void);
 Node_ptr create_node(void*);
 int search(List_ptr, void* value);
@@ -34,7 +36,10 @@ Status add_to_start(List_ptr, void* value);
 Status insert_at(List_ptr, void* value, int position);
 Status add_unique(List_ptr, void* value);
 
-void display(List_ptr);
+void print_int(void* number);
+void print_char(void* letter);
+
+void display(List_ptr, Print);
 
 Status remove_from_start(List_ptr);
 Status remove_from_end(List_ptr);

@@ -3,6 +3,16 @@
 
 #include "list.h"
 
+void print_int(void* number)
+{
+  printf("%d", *(int*)number);
+}
+
+void print_char(void* letter)
+{
+  printf("%c", *(char*)letter);
+}
+
 List_ptr create_list(void)
 {
   List_ptr list = malloc(sizeof(List));
@@ -217,12 +227,12 @@ Status remove_all_occurrences(List_ptr list, void* value)
   return counter > 0 ? Success : Failure;
 }
 
-void display(List_ptr list)
+void display(List_ptr list, Print print)
 {
   Node_ptr iterator = list->head;
   while (iterator != NULL)
   {
-    printf("%d ", *(int*)iterator->value);
+    print(iterator->value);
     iterator = iterator->next;
   }
   printf("\n");
