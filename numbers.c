@@ -3,6 +3,8 @@
 
 #include "list.h"
 
+typedef void* (*Take_input)(void);
+
 void show_menu()
 {
   printf("Main Menu\n---------\n(a) add a number to the end of the list\n(b) add a number to the start of the list\n(c) insert a number at a given position in the list\n(d) add a unique item on the list at the end(if it alreay exists, do not insert)\n(e) remove a number from the beginning of the list\n(f) remove a number from the end of the list\n(g) remove a number from a given position in the list\n(h) remove first occurrence of a number\n(i) remove all occurrences of a number\n(j) clear the whole list\n(k) check if a number exists in the list\n(l) display the list of numbers\n(m) exit\n\nPlease enter the alphabet of the operation you would like to perform ");
@@ -12,14 +14,14 @@ void show_result(Status result, Char_ptr message)
 {
   if (result)
   {
-    printf("number %s\n", message);
+    printf("element %s\n", message);
     return;
   }
-  printf("number not %s\n", message);
+  printf("element not %s\n", message);
   return;
 }
 
-void* take_number_input()
+void* take_int_input()
 {
   int input;
   int *number = malloc(sizeof(int));
@@ -37,30 +39,30 @@ int take_position_input()
   return position;
 }
 
-void oparate_on(List_ptr list, char option)
+void oparate_on(List_ptr list, char option, Take_input input)
 {
   void* number;
   int result,  position;
   switch (option)
   {
   case 'a':
-    number = take_number_input();
+    number = input();
     show_result(add_to_end(list, number), "added");
     break;
 
   case 'b':
-    number = take_number_input();
+    number = input();
     show_result(add_to_start(list, number), "added");
     break;
 
   case 'c':
-    number = take_number_input();
+    number = input();
     position = take_position_input();
     show_result(insert_at(list, number, position), "added");
     break;
 
   case 'd':
-    number = take_number_input();
+    number = input();
     show_result(add_unique(list, number), "added");
     break;
 
@@ -78,12 +80,12 @@ void oparate_on(List_ptr list, char option)
     break;
 
   case 'h':
-    number = take_number_input();
+    number = input();
     show_result(remove_first_occurrence(list, number), "removed");
     break;
 
   case 'i':
-    number = take_number_input();
+    number = input();
     show_result(remove_all_occurrences(list, number), "removed");
     break;
 
@@ -92,7 +94,7 @@ void oparate_on(List_ptr list, char option)
     break;
 
   case 'k':
-    number = take_number_input();
+    number = input();
     result = search(list, number) < list->count ? 1 : 0;
     show_result(result, "exits");
     break;
@@ -119,7 +121,7 @@ int main(void)
   {
     show_menu();
     scanf(" %c", &option);
-    oparate_on(list, option);
+    oparate_on(list, option, &take_int_input);
   }
   destroy_list(list);
   return 0;
