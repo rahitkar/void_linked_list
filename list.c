@@ -5,7 +5,7 @@
 
 void print_int(void* number)
 {
-  printf("%d", *(int*)number);
+  printf(" %d", *(int*)number);
 }
 
 void print_char(void* letter)
@@ -98,13 +98,13 @@ Status add_to_end(List_ptr list, void* value)
   return Success;
 }
 
-Status add_unique(List_ptr list, void* value)
+Status add_unique(List_ptr list, void* value, Check_equality check)
 {
   if (list->head == NULL)
   {
     return Failure;
   }
-  int position = search(list, value);
+  int position = search(list, value, check);
   if (position >= list->count)
   {
     return add_to_end(list, value);
@@ -185,13 +185,18 @@ Status remove_from_end(List_ptr list)
   return Success;
 }
 
-int search(List_ptr list, void* value)
+int is_int_equal(void* num1, void* num2)
+{
+  return *(int*)num1 == *(int*)num2; 
+}
+
+int search(List_ptr list, void* value, Check_equality check)
 {
   int position = 0;
   Node_ptr iterator = list->head;
   while (iterator != NULL)
   {
-    if (*(int*)iterator->value == *(int*)value)
+    if ((*check)(iterator->value, value))
     {
       return position;
     }
@@ -201,13 +206,13 @@ int search(List_ptr list, void* value)
   return position;
 }
 
-Status remove_first_occurrence(List_ptr list, void* value)
+Status remove_first_occurrence(List_ptr list, void* value, Check_equality check)
 {
   if (list->head == NULL)
   {
     return Failure;
   }
-  int position = search(list, value);
+  int position = search(list, value, check);
   if (position < list->count)
   {
     remove_at(list, position);
@@ -216,12 +221,12 @@ Status remove_first_occurrence(List_ptr list, void* value)
   return Failure;
 }
 
-Status remove_all_occurrences(List_ptr list, void* value)
+Status remove_all_occurrences(List_ptr list, void* value, Check_equality check)
 {
-  int status = remove_first_occurrence(list, value), counter = 0;
+  int status = remove_first_occurrence(list, value, check), counter = 0;
   while (status == 1)
   {
-    status = remove_first_occurrence(list, value);
+    status = remove_first_occurrence(list, value, check);
     counter++;
   }
   return counter > 0 ? Success : Failure;
@@ -232,7 +237,7 @@ void display(List_ptr list, Print print)
   Node_ptr iterator = list->head;
   while (iterator != NULL)
   {
-    print(iterator->value);
+    (*print)(iterator->value);
     iterator = iterator->next;
   }
   printf("\n");

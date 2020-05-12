@@ -26,15 +26,18 @@ typedef List *List_ptr;
 typedef char * Char_ptr;
 
 typedef void (*Print)(void*);
+typedef int (*Check_equality)(void*, void*);
 
 List_ptr create_list(void);
 Node_ptr create_node(void*);
-int search(List_ptr, void* value);
+
+int is_int_equal(void* num1, void* num2);
+int search(List_ptr, void* value, Check_equality check);
 
 Status add_to_end(List_ptr, void* value);
 Status add_to_start(List_ptr, void* value);
 Status insert_at(List_ptr, void* value, int position);
-Status add_unique(List_ptr, void* value);
+Status add_unique(List_ptr, void* value, Check_equality check);
 
 void print_int(void* number);
 void print_char(void* letter);
@@ -45,8 +48,8 @@ Status remove_from_start(List_ptr);
 Status remove_from_end(List_ptr);
 Status remove_at(List_ptr, int position);
 
-Status remove_first_occurrence(List_ptr, void* value); 
-Status remove_all_occurrences(List_ptr, void* value); 
+Status remove_first_occurrence(List_ptr, void* value, Check_equality check); 
+Status remove_all_occurrences(List_ptr, void* value, Check_equality check); 
 
 Status clear_list(List_ptr); // Removes all elements in the list
 

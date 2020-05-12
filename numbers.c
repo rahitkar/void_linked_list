@@ -49,31 +49,31 @@ int take_position_input()
   return position;
 }
 
-void oparate_on(List_ptr list, char option, Take_input input, Print print)
+void oparate_on(List_ptr list, char option, Take_input input, Print print, Check_equality check)
 {
-  void* number;
+  void* element;
   int result,  position;
   switch (option)
   {
   case 'a':
-    number = input();
-    show_result(add_to_end(list, number), "added");
+    element = input();
+    show_result(add_to_end(list, element), "added");
     break;
 
   case 'b':
-    number = input();
-    show_result(add_to_start(list, number), "added");
+    element = input();
+    show_result(add_to_start(list, element), "added");
     break;
 
   case 'c':
-    number = input();
+    element = input();
     position = take_position_input();
-    show_result(insert_at(list, number, position), "added");
+    show_result(insert_at(list, element, position), "added");
     break;
 
   case 'd':
-    number = input();
-    show_result(add_unique(list, number), "added");
+    element = input();
+    show_result(add_unique(list, element, check), "added");
     break;
 
   case 'e':
@@ -90,13 +90,13 @@ void oparate_on(List_ptr list, char option, Take_input input, Print print)
     break;
 
   case 'h':
-    number = input();
-    show_result(remove_first_occurrence(list, number), "removed");
+    element = input();
+    show_result(remove_first_occurrence(list, element, check), "removed");
     break;
 
   case 'i':
-    number = input();
-    show_result(remove_all_occurrences(list, number), "removed");
+    element = input();
+    show_result(remove_all_occurrences(list, element, check), "removed");
     break;
 
   case 'j':
@@ -104,8 +104,8 @@ void oparate_on(List_ptr list, char option, Take_input input, Print print)
     break;
 
   case 'k':
-    number = input();
-    result = search(list, number) < list->count ? 1 : 0;
+    element = input();
+    result = search(list, element, check) < list->count ? 1 : 0;
     show_result(result, "exits");
     break;
 
@@ -131,8 +131,8 @@ int main(void)
   {
     show_menu();
     scanf(" %c", &option);
-    // oparate_on(list, option, &take_int_input, &print_int);
-    oparate_on(list, option, &take_char_input, &print_char);
+    oparate_on(list, option, &take_int_input, &print_int, &is_int_equal);
+    // oparate_on(list, option, &take_char_input, &print_char, &is_char_equal);
   }
   destroy_list(list);
   return 0;
